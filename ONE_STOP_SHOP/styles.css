@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:400,700");
+
+:root{
+
+    --primaryColor : #837f7ca6;
+    --mainWhite    :rgb(236, 228, 228);
+    --mainBlack    :#222;
+    --mainGrey     :#ececec;
+    --mainSpacing  :0.1rem; 
+}
+*{
+    margin :0;
+    padding:0;
+    box-sizing: border-box;
+}
+.HomePage{
+
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+}
+.OneStopShop{
+
+    border:3px solid rgb(105, 110, 105);
+    height: 5rem;
+    width :100%;
+    position:sticky;
+}
+.OneStopShop h2{
+
+    margin-left: 35rem;
+    color: chocolate;
+    font-family: serif;
+    font-weight: bolder;
+}
+.ad_space{
+
+    border-left:2px solid pink;
+    height:100%;
+    width :10%;
+    float:right;   
+}
+.content_area{
+
+    border:3px solid green;
+    width: 90%;
+    height: 100%;        
+}
+.social_networks{
+
+    float: left;
+    height:100%;
+    width:5%;
+    border:3px solid green;
+
+}
+.navigator_panel{
+
+    position: sticky;
+    width : 100%;
+    height: 10%;
+    border:3px solid green;   
+}
+.navigator_panel ul{
+
+    display: inline;
+    align-items: center;
+    padding-left: 150px;
+}
+.Welcome_Heading{
+
+    border:3px solid rgb(21, 22, 21);
+    width :100%;
+    height :60px;
+}
+.Welcome_Heading h4{
+
+    padding-left: 33rem;
+    color: chocolate;
+    font-weight: bold;
+    font-family: serif;
+    letter-spacing: var(--mainSpacing);
+}
+.banner {
+
+    border:3px solid rgb(21, 22, 21);
+    width :100%;
+    height : 400px;
+}
+.visuals img{
+    width : 70%;
+    height:  70%;
+}
+.visuals{
+
+    /* this is where we  to put things in the articles in the banner */
+    border:3px solid rgb(21, 22, 21);
+    margin-left: 5%;
+    height : 350px;
+    display :grid;
+    grid-template-columns: auto auto auto ;
+    grid-row: 3;
+
+}
