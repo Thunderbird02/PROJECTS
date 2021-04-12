@@ -5,7 +5,6 @@ import json
 import base64
 
 #scrape imports
-import requests
 from bs4 import BeautifulSoup
 
 Base_Url = "https://github.com/search?"
@@ -14,25 +13,23 @@ repo_description = []
 star_s = []
 languages = []
 issues = []
-last_updated = []
+Last_updated = []
 license_s = []
+
 
 #github_api stuff
 g = Github(per_page=10)
 
 def github_api(search_term , num_pages = 1):
 
-    print('github api ')
+    List = []
 
     rate_limit = g.get_rate_limit()
     rate = rate_limit.search
     if rate.remaining == 0:
-        print(f'You have 0/{rate.limit} API calls remaining. Reset time: {rate.reset}')
+        rate.reset
         return
-    else:
-        print(f'You have {rate.remaining}/{rate.limit} API calls remaining')
-
-
+   
     query = '+'.join(search_term) 
     result = g.search_repositories(query)
  
@@ -52,20 +49,17 @@ def github_api(search_term , num_pages = 1):
 
         star_s.append(repo.stargazers_count)
 
-        last_updated.append('Updated on ' + str(repo.pushed_at))     
+        Last_updated.append(str(repo.updated_at))     
 
         try:
             license_s.append(repo.get_license().license.name)
         except:
             license_s.append('none')
 
-    for i in last_updated:
-        print(i)
-
-
+    List = list_of_dicts_api()
     
-
-
+    return List
+    
 
 def scrape_github(search_term , num_pages = 1):
     query = 'q='+ search_term
@@ -81,6 +75,8 @@ def scrape_github(search_term , num_pages = 1):
     manipulate_repo_list(repo_list , repo_descr , stars  , footer)
 
 def manipulate_repo_list(repo_list , repo_descr , stars , footer ):
+
+    List = []
 
     index = 0   
     description = repo_list.find_all('a' , class_ = 'v-align-middle')
@@ -104,18 +100,20 @@ def manipulate_repo_list(repo_list , repo_descr , stars , footer ):
     #extracting last updated from the soup object
     repository_last_update(footer)
 
+    List = list_of_dicts_scrape()
+
+    print(List)
+
+
 def repository_names(description):
-    print('repository names')
     for item in description:
         repo_names.append(item.text)
 
 def repository_description(repo_descr):
-    print('repository description')
     for repo_desc_item in repo_descr:
         repo_description.append(repo_desc_item.text.strip())
 
 def repository_stars(stars):
-    print('repository stars')
     for x in stars :
         if len(x.get('class')) == 2:
             continue
@@ -123,7 +121,6 @@ def repository_stars(stars):
             star_s.append(x.text.strip())
 
 def repository_languages(footer):
-    print('languages')
     for Item in footer :
         if len(Item.findChildren('div' , recursive = False)) >= 3:
             children = Item.find_all('div' , class_ ='mr-3')
@@ -135,7 +132,6 @@ def repository_languages(footer):
             languages.append('none')
 
 def repository_number_of_issues(footer):
-    print('number of issues')
     for _item in footer :
         if len(_item.findChildren('div' , recursive = False)) >= 3:
             number_of_issues = _item.find_all('a' , class_ = 'Link--muted f6')
@@ -147,16 +143,47 @@ def repository_number_of_issues(footer):
             issues.append('none')
 
 def repository_last_update(footer):
-    print('last update')
     for item_ in footer :
         date_  = item_.find('relative-time' , class_ = 'no-wrap')
-        last_updated.append('Updated on ' + date_.text)
-    
-         
+        Last_updated.append(date_.text)
+
+def list_of_dicts_api():
+    myList = []
+   
+    for   i    in    range(10):
+        myList.append({'repo_name'  : str(repo_names[i]),
+                      'description' : str(repo_description[i]),
+                      'num_stars'   : str(star_s[i]),
+                      'language'    : str(languages[i]),
+                      'license'    : str(license_s[i]),
+                      'last_updated': str(Last_updated[i]),
+                      })
+
+    return myList
+
+def list_of_dicts_scrape():
+    myList = []
+   
+    for   i    in    range(10):
+        myList.append({'repo_name'  : str(repo_names[i]),
+                      'description' : str(repo_description[i]),
+                      'num_stars'   : str(star_s[i]),
+                      'language'    : str(languages[i]),
+                      'last_updated': str(Last_updated[i]),
+                      'num_issues'  : str(issues[i])                      })
+
+    return myList
+           
 if __name__ == "__main__":
-    keywords = input('Enter keyword(s)[eg Python , Flask , Postgres]')
-    keywords = [keyword.strip() for keyword in keywords.split(',')]
-    github_api(keywords , 1 )
+    github  = False
+    if github == True:
+        keywords = input('Enter keyword(s)[eg Python , Flask , Postgres]')
+        keywords = [keyword.strip() for keyword in keywords.split(',')]
+        github_api(keywords , 1)
+    else:
+        keywords = input('Enter keyword(s)[eg Python , Flask , Postgres]')
+        scrape_github(keywords , 1)
+        
     
     
 
