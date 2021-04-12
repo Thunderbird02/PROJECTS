@@ -1,0 +1,28 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="OuterContainer">         
+            <div class = "form_container">
+                <form action = "http://127.0.0.1:5000/Details" method="post">
+                    <table>
+                        <tr>
+                            <td><input type="radio" id="Github_Api" name = 'option' value="github_api" checked</td>
+                            <td><label for="github_api"> github_api </label></td>
+                        </tr>
+                        <tr>
+                            <td><input type="radio" id="scrape_github" name = 'option' value="Scrape_Github"</td>
+                            <td><label for="Scrape_Github">scrape_github </label></td>
+                        </tr>
+                        <tr><td><input type = "submit"></td></tr>  
+                    </table>
+                </form>
+            </div>
+    </div> 
+</body>
+</html>

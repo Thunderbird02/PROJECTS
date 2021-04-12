@@ -1,0 +1,13 @@
+.body{
+
+    box-sizing: border-box;
+    border : 2px solid red ;
+    display :flexbox;
+}
+.form_container{
+
+    width : 100px;
+    height: 100px;
+    background-color: blue;
+
+}
